@@ -6,7 +6,7 @@ const db = require('./config');
 // body-parser
 const bodyParser = require('body-parser');
 // port
-const port = parseInt(process.env.port) || 4000;
+const port = parseInt(process.env.port) || 3300;
 // Express app
 const app = express();
 // Router
@@ -45,6 +45,24 @@ route.post('/add',bodyParser.json(), (req, res)=>{
         }
     })
 })
+
+// delete
+route.delete('/reservations/:clientID', (req, res) => {
+    const strQry =
+    `DELETE FROM reservations
+     WHERE clientID = ?;`;
+    //  db
+    db.query(strQry,[req.params.id], (err)=>{
+        if(err) throw err;
+        res.status(200).json( {msg:"A row was successfully deleted."});
+    })
+});
 app.listen(port, ()=>{
     console.log(`Server is running at ${port}`);
 })
+
+// route.patch('/login', (req, res) => {
+//     const clientID = req.params.clientID;
+//     res.send('client ID updated successfully!');
+
+// });
